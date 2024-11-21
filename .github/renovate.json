@@ -6,11 +6,11 @@
     "enabled": true,
     "packageRules": [
       {
-        "matchUpdateTypes": ["digest"],  // Only digest updates
+        "matchUpdateTypes": ["digest"],
         "enabled": true
       },
       {
-        "matchUpdateTypes": ["major", "minor", "patch", "pin"],  // Disable tag updates
+        "matchUpdateTypes": ["major", "minor", "patch", "pin"],
         "enabled": false
       }
     ]
