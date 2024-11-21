@@ -4,6 +4,8 @@
   "enabledManagers": ["dockerfile"],
   "dockerfile": {
     "enabled": true,
+    "additionalBranchPrefix": "{{baseBranch}}/",
+    "branchPrefix": "konflux/mintmaker/",
     "packageRules": [
       {
         "matchUpdateTypes": ["digest"],
@@ -12,6 +14,10 @@
       {
         "matchUpdateTypes": ["major", "minor", "patch", "pin"],
         "enabled": false
+      },
+      {
+        "matchFileNames": ["*Dockerfile.konflux*"],
+        "enabled": true
       }
     ]
   },
