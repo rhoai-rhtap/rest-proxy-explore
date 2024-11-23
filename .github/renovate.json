@@ -4,22 +4,19 @@
     "config:recommended"
   ],
   "branchPrefix": "renovate/",
-  "baseBranches": ["main", "test-1"],
   "enabledManagers": ["dockerfile", "tekton", "rpm"],
   "dockerfile": {
-    "schedule": ["before 3pm"],
     "enabled": true,
-    "additionalBranchPrefix": "{{baseBranch}}/",
-    "branchPrefix": "konflux/mintmaker/",
     "packageRules": [
       {
-        "matchUpdateTypes": ["major", "minor", "pin", "pinDigest", "patch", "bump"],
-        "enabled": false
-      },
-      {
-        "matchUpdateTypes": ["digest"],
+       "baseBranches": ["main"], 
+        "schedule": ["at any time"],
         "matchFileNames": ["*Dockerfile.konflux*"],
-        "enabled": true
+        "matchUpdateTypes": ["digest"],
+        "enabled": true,
+        "groupName": "Dockerfile Digest Updates",
+        "branchPrefix": "konflux/digest-update/",
+        "prBodyTemplate": "Updates Docker image digest for {{packageName}} to {{newVersion}}"
       }
     ]
   },
@@ -31,12 +28,13 @@
     "includePaths": [
       ".tekton/**"
     ],
-  "schedule": ["before 3pm"],
   "ignoreTests": true,
   "automergeType": "pr",
   "automerge": true,
     "packageRules": [
       {
+        "baseBranches": ["test-1"],
+        "schedule": ["before 3pm"],
         "matchUpdateTypes": ["major", "minor", "pin", "pinDigest", "patch", "bump"],
         "enabled": false
       },
