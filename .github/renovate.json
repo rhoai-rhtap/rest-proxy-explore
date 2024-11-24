@@ -1,13 +1,14 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
-  "branchPrefix": "renovate/",
   "enabledManagers": ["dockerfile", "tekton"],
+  "baseBranches": ["main", "test-1"],  
   "dockerfile": {
     "enabled": true,
+    "baseBranches": ["main", "test-1"], 
     "packageRules": [
       {
-        "baseBranches": ["main"],
+        "matchBaseBranches": ["main"],
         "schedule": ["at any time"],
         "matchFileNames": ["*Dockerfile.konflux*"],
         "matchUpdateTypes": ["digest"],
@@ -24,9 +25,10 @@
     "ignoreTests": true,
     "automergeType": "pr",
     "automerge": true,
+    "baseBranches": ["main", "test-1"],
     "packageRules": [
       {
-        "baseBranches": ["test-1"],
+        "matchBaseBranches": ["test-1"],
         "schedule": ["at any time"],
         "matchUpdateTypes": [
           "major",
@@ -44,7 +46,7 @@
         "groupName": "Konflux references",
         "branchPrefix": "konflux/references/",
         "group": {
-          "branchTopic": "{{{baseBranch}}",
+          "branchTopic": "{{{baseBranch}}}",
           "commitMessageTopic": "{{{groupName}}}"
         },
         "commitMessageTopic": "Konflux references",
@@ -58,8 +60,8 @@
         "recreateWhen": "always",
         "rebaseWhen": "behind-base-branch",
         "matchPackageNames": [
-          "/^quay.io/redhat-appstudio-tekton-catalog//",
-          "/^quay.io/konflux-ci/tekton-catalog//"
+          "^quay.io/redhat-appstudio-tekton-catalog/",
+          "^quay.io/konflux-ci/tekton-catalog/"
         ]
       }
     ]
