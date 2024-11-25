@@ -7,7 +7,7 @@
   "automerge": true,
   "enabledManagers": ["dockerfile", "tekton"],
   "dockerfile": {
-    "baseBranches": ["main", "test-1"],
+    "baseBranches": ["main"],
     "enabled": true,
     "additionalBranchPrefix": "{{baseBranch}}/",
     "branchPrefix": "konflux/mintmaker/",
@@ -28,7 +28,7 @@
     ]
   },
   "tekton": {
-    "baseBranches": ["main", "test-1"],
+    "baseBranches": ["test-1"],
     "fileMatch": ["\\.yaml$", "\\.yml$"],
     "includePaths": [".tekton/**"],
     "packageRules": [
@@ -45,6 +45,7 @@
         "enabled": false
       },
       {
+        "matchBaseBranches": ["test-1"],
         "matchUpdateTypes": ["digest"],
         "enabled": true,
         "groupName": "Konflux references",
