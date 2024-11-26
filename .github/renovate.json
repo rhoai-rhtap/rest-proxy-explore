@@ -11,13 +11,10 @@
     "enabled": true,
     "additionalBranchPrefix": "{{baseBranch}}/",
     "branchPrefix": "konflux/mintmaker/",
-    "ignoreTests": true,
-    "automergeType": "pr",
-    "automerge": true,
+    "schedule": ["at any time"],
     "packageRules": [
       {
         "matchBaseBranches": ["main"],
-        "schedule": ["at any time"],
         "matchFileNames": ["*Dockerfile.konflux*"],
         "matchUpdateTypes": ["digest"],
         "enabled": true,
@@ -31,9 +28,9 @@
     "baseBranches": ["test-1"],
     "fileMatch": ["\\.yaml$", "\\.yml$"],
     "includePaths": [".tekton/**"],
+    "schedule": ["at any time"],
     "packageRules": [
       {
-        "schedule": ["at any time"],
         "matchUpdateTypes": [
           "major",
           "minor",
