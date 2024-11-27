@@ -1,5 +1,5 @@
 #go-toolset:1.21
-FROM registry.redhat.io/ubi8/go-toolset:1.21@sha256:4ec05fd5b355106cc0d990021a05b71bbfb9231e4f5bdc0c5316515edf6a1c96 builder
+FROM registry.redhat.io/ubi8/go-toolset:1.21@sha256:09a49fc33f45e53b3233b6816e5b39ddb9eddd3238ff117d29915547523e6646 builder
 
 LABEL image="build"
 
