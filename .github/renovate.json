@@ -3,15 +3,13 @@
   "extends": ["config:recommended"],
   "branchPrefix": "renovate/",
   "baseBranches": ["main", "test-1"],
-  "ignoreTests": true,
-  "automergeType": "pr",
-  "automerge": true,
   "enabledManagers": ["dockerfile", "tekton"],
   "packageRules": [
     {
       "matchManagers": ["dockerfile"],
       "matchBaseBranches": ["main"],
       "matchUpdateTypes": ["digest"],
+      "matchFileNames": ["*Dockerfile.konflux*"],
       "enabled": true,
       "groupName": "Dockerfile Digest Updates - Main",
       "branchPrefix": "renovate/docker-main/",
@@ -35,12 +33,12 @@
   "dockerfile": {
     "enabled": true,
     "schedule": ["at any time"],
-    "fileMatch": ["^.*Dockerfile\\.konflux.*$"],
     "additionalBranchPrefix": "{{baseBranch}}/",
     "branchPrefix": "konflux/mintmaker/",
-    "ignoreTests": true,
-    "automergeType": "pr",
-    "automerge": true
+    "ignorePaths": [
+      "**/Dockerfile",
+      "!**/Dockerfile.konflux"
+    ]
   },
   "tekton": {
     "enabled": true,
