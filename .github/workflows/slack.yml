@@ -28,9 +28,9 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      # Notify Slack only if PR title contains "Update registry"
+      # Notify Slack only if PR author is 'konflux-internal-p02[bot]' and title contains 'Update registry'
       - name: Notify Slack
-        if: contains(github.event.pull_request.title, 'Update registry')
+        if: ${{ github.event.pull_request.user.login == 'konflux-internal-p02[bot]' && contains(github.event.pull_request.title, 'Update registry') }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           PR_TITLE: ${{ github.event.pull_request.title }}
@@ -38,6 +38,6 @@ jobs:
         run: |
           curl -X POST -H 'Content-type: application/json' \
           --data "{
-            \"text\": \"📢 *Pull Request Opened: $PR_TITLE*\n*URL:* <$PR_URL>\"
+            \"text\": \"📢 *Pull Request Opened by Konflux Internal p02!*\n*Title:* $PR_TITLE\n*URL:* <$PR_URL>\"
           }" \
           $SLACK_WEBHOOK_URL
