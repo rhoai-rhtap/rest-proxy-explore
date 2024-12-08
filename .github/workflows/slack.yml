@@ -18,26 +18,30 @@ jobs:
           echo "PR Author: ${{ github.event.pull_request.user.login }}"
           echo "PR Title: ${{ github.event.pull_request.title }}"
           echo "PR URL: ${{ github.event.pull_request.html_url }}"
+          
       # Ensure SLACK_WEBHOOK_URL is set
       - name: Verify Slack Webhook URL
         run: |
-          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+          if [ -z "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
             echo "Error: SLACK_WEBHOOK_URL is not set or empty."
             exit 1
           fi
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      # Notify Slack only if PR author is 'konflux-internal-p02[bot]' and title starts with specific strings
+      # Notify Slack if conditions are met
       - name: Notify Slack
-        if: ${{ github.event.pull_request.user.login == 'konflux-internal-p02[bot]' && (startsWith(github.event.pull_request.title, 'Update registry') || startsWith(github.event.pull_request.title, 'chore(deps): update registry')) }}
+        run: |
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_URL="${{ github.event.pull_request.html_url }}"
+          
+          if [[ "$PR_AUTHOR" == "konflux-internal-p02[bot]" && ( "$PR_TITLE" == "Update registry"* || "$PR_TITLE" == "chore(deps): update registry"* ) ]]; then
+            curl -X POST -H 'Content-type: application/json' \
+            --data "{
+              \"text\": \"📢 *Pull Request Opened by Konflux Internal p02!*\n*Title:* $PR_TITLE\n*URL:* <$PR_URL>\"
+            }" \
+            $SLACK_WEBHOOK_URL
+          else
+            echo "Conditions not met. Slack notification not sent."
+          fi
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          PR_TITLE: ${{ github.event.pull_request.title }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data "{
-            \"text\": \"📢 *Pull Request Opened by Konflux Internal p02!*\n*Title:* $PR_TITLE\n*URL:* <$PR_URL>\"
-          }" \
-          $SLACK_WEBHOOK_URL
