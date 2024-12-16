@@ -2,22 +2,29 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
   "branchPrefix": "renovate/",
-  "baseBranches": ["main", "test-1", "test-2"],
   "ignoreTests": true,
   "automergeType": "pr",
   "automerge": true,
+  "baseBranches": ["main", "test-1"],
   "enabledManagers": ["dockerfile", "tekton", "rpm"],
   "packageRules": [
     {
       "matchManagers": ["dockerfile"],
-      "matchBaseBranches": ["main", "test-1"],
+      "matchBaseBranches": ["main"],
       "matchUpdateTypes": ["digest"],
       "matchFileNames": ["*Dockerfile.konflux*"],
       "enabled": true,
-      "ignoreTests": true,
-      "automergeType": "pr",
-      "automerge": true,
       "groupName": "Dockerfile Digest Updates - Main",
+      "branchPrefix": "renovate/docker-main/",
+      "semanticCommits": "enabled"
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "matchBaseBranches": ["test-1"],
+      "matchUpdateTypes": ["digest"],
+      "matchFileNames": ["*Dockerfile.konflux*"],
+      "enabled": true,
+      "groupName": "Dockerfile Digest Updates - test-1",
       "branchPrefix": "renovate/docker-main/",
       "semanticCommits": "enabled"
     },
@@ -26,23 +33,14 @@
       "matchBaseBranches": ["test-1", "test-2"],
       "matchUpdateTypes": ["digest"],
       "enabled": true,
-      "groupName": "Tekton Updates",
-      "branchPrefix": "renovate/tekton/",
+      "groupName": "Tekton Updates - test-1",
+      "branchPrefix": "renovate/tekton-test-1/",
       "semanticCommits": "enabled",
       "prFooter": "To execute skipped test pipelines write comment `/ok-to-test`",
       "matchPackageNames": [
         "/^quay.io/redhat-appstudio-tekton-catalog//",
         "/^quay.io/konflux-ci/tekton-catalog//"
       ]
-    },
-    {
-      "matchManagers": ["rpm"],
-      "matchBaseBranches": ["main"],
-      "enabled": true,
-      "groupName": "RPM Updates",
-      "commitMessageTopic": "RPM updates",
-      "branchPrefix": "renovate/rpm/",
-      "semanticCommits": "enabled"
     }
   ],
   "dockerfile": {
@@ -50,9 +48,6 @@
     "schedule": ["at any time"],
     "additionalBranchPrefix": "{{baseBranch}}/",
     "branchPrefix": "konflux/mintmaker/",
-    "ignoreTests": true,
-    "automergeType": "pr",
-    "automerge": true,
     "packageRules": [
       {
         "matchUpdateTypes": [
@@ -68,12 +63,9 @@
     ],
     "ignorePaths": [
       "**/Dockerfile",
-      "!**/Dockerfile.konflux*"
+      "!**/Dockerfile.konflux"
     ],
-    "pinDigests": true,
-    "ignoreTests": true,
-    "automerge": true,
-    "automergeType": "pr"
+    "pinDigests": true
   },
   "tekton": {
     "enabled": true,
