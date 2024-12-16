@@ -122,6 +122,7 @@
         "commitMessageTopic": "RPM updates",
         "matchManagers": ["rpm"],
         "enabled": true,
+        "schedule": ["at any time"],
         "branchPrefix": "renovate/rpm/",
         "semanticCommits": "enabled"
       }
