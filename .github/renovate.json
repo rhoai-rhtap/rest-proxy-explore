@@ -5,8 +5,8 @@
   "ignoreTests": true,
   "automergeType": "pr",
   "automerge": true,
-  "baseBranches": ["main", "test-1"],
-  "enabledManagers": ["dockerfile", "tekton"],
+  "baseBranches": ["main", "test-1", "test-2"],
+  "enabledManagers": ["dockerfile", "tekton", "rpm"],
   "packageRules": [
     {
       "matchManagers": ["dockerfile"],
@@ -14,22 +14,14 @@
       "matchUpdateTypes": ["digest"],
       "matchFileNames": ["*Dockerfile.konflux*"],
       "enabled": true,
-      "ignoreTests": true,
-      "automergeType": "pr",
-      "automerge": true,
       "groupName": "Dockerfile Digest Updates - Main",
       "branchPrefix": "renovate/docker-main/",
       "semanticCommits": "enabled"
     },
     {
       "matchManagers": ["dockerfile"],
-      "matchBaseBranches": ["test-1"],
-      "matchUpdateTypes": ["digest"],
-      "matchFileNames": ["*Dockerfile.konflux*"],
-      "enabled": true,
-      "groupName": "Dockerfile Digest Updates - test-1",
-      "branchPrefix": "renovate/docker-main/",
-      "semanticCommits": "enabled"
+      "matchBaseBranches": ["test-1", "test-2"],
+      "enabled": false
     },
     {
       "matchManagers": ["tekton"],
@@ -45,12 +37,25 @@
         "/^quay.io/konflux-ci/tekton-catalog//"
       ]
     }
+    {
+      "matchManagers": ["rpm"],
+      "matchBaseBranches": ["main"],
+      "groupName": "RPM Updates",
+      "commitMessageTopic": "RPM updates",
+      "enabled": true,
+      "schedule": ["at any time"],
+      "branchPrefix": "renovate/rpm/",
+      "semanticCommits": "enabled"
+    }    
   ],
   "dockerfile": {
     "enabled": true,
     "schedule": ["at any time"],
     "additionalBranchPrefix": "{{baseBranch}}/",
     "branchPrefix": "konflux/mintmaker/",
+    "ignoreTests": true,
+    "automergeType": "pr",
+    "automerge": true,
     "packageRules": [
       {
         "matchUpdateTypes": [
@@ -107,6 +112,11 @@
         ]
       }
     ]
+  },
+  "rpm": {
+    "enabled": true,
+    "baseBranches": ["main"],     
+    "schedule": ["at any time"]
   },
   "prHourlyLimit": 0
 }
